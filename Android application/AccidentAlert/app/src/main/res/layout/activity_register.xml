@@ -3,25 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFCFC"
+    android:background="@color/primary"
     android:orientation="vertical"
     tools:context=".Register">
 
     <RelativeLayout
+
         android:id="@+id/ll_appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FDF9F9"
+        android:background="@color/background2"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/tv_restAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:text="Emergency Alert System"
             android:textAlignment="center"
-            android:background="@color/white"
-            android:textColor="#0BD3D3"
+            android:textColor="@color/buttons"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -33,7 +34,7 @@
 
         <EditText
             android:id="@+id/phone"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="30dp"
@@ -41,55 +42,50 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/bg_rounded_input_field"
             android:hint="Enter phone number"
-            android:inputType="text"
+            android:inputType="number"
             android:padding="12dp"
-            android:textColor="@color/darker_grey"
-            android:textColorHint="@color/grey" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textColorHint="#3E3E3E" />
 
         <Button
+            android:layout_marginTop="30dp"
             android:id="@+id/add"
+            android:layout_marginEnd="20sp"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_margin="15dp"
-            android:backgroundTint="#FF0BD3D3"
-            android:text="ADD" />
-
-        <Button
-            android:id="@+id/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_margin="15dp"
-            android:backgroundTint="#FF0BD3D3"
-            android:text="DELETE" />
-
-        <Button
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_margin="15dp"
-            android:backgroundTint="#FF0BD3D3"
-            android:text="VIEW" />
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/buttons"
+            android:text="ADD"  android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="8dp"
-        android:text="TO DELETE A NUMBER ENTER THE NUMBER AND PRESS DELETE BUTTON"
-        android:textAlignment="center"
-        android:textColor="@color/dark_grey" />
 
-    <ListView
-        android:id="@+id/list"
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/empty"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/dark_grey" />
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/dark_grey" />
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No contacts added"
+            android:visibility="gone"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+
+
 
 </LinearLayout>

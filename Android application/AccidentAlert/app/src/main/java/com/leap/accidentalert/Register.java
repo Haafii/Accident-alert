@@ -4,14 +4,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -32,46 +38,65 @@ public class Register extends AppCompatActivity {
 
         e1 = findViewById(R.id.phone);
         b1 = findViewById(R.id.add);
-        b2 = findViewById(R.id.delete);
-        b3 = findViewById(R.id.view);
         listView = findViewById(R.id.list);
 
         myDB = new DatabaseHandler(this);
 
 
-
         b1.setOnClickListener(v -> {
             String sr = e1.getText().toString();
+            if(sr.isEmpty()) {
+                Toast.makeText(this, "Please enter a number", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Toast.makeText(Register.this, myDB.addData(sr)?"Data Added..":"Unsuccessful", Toast.LENGTH_SHORT).show();
             e1.setText("");
+            loadData();
         });
 
-        b2.setOnClickListener(v -> {
-            sqLitedb = myDB.getWritableDatabase();
-            String x = e1.getText().toString();
-            DeleteData(x);
-            Toast.makeText(Register.this, "Data Deleted", Toast.LENGTH_SHORT).show();
-        });
 
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadData();
-            }
-        });
+        loadData();
 
     }
 
 
 
     private void loadData() {
+        TextView emptyView =findViewById(R.id.emptyView);
         ArrayList<String> theList = new ArrayList<>();
         Cursor data = myDB.getListContents();
         if (data.getCount() == 0) {
-            Toast.makeText(Register.this, "There is no content", Toast.LENGTH_SHORT).show();
-        }else {
+            listView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
             while (data.moveToNext())   theList.add(data.getString(1));
-            listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, theList));
+            listView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 0,theList) {
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    View listItem = convertView;
+                    if(listItem == null)
+                        listItem = LayoutInflater.from(Register.this).inflate(R.layout.listitem,parent,false);
+
+
+                    TextView name = (TextView) listItem.findViewById(R.id.item_name);
+                    name.setText(theList.get(position));
+
+                   listItem.findViewById(R.id.delete_button).setOnClickListener(v->{
+                       sqLitedb = myDB.getWritableDatabase();
+                       DeleteData(theList.get(position));
+                       Toast.makeText(Register.this, "Data Deleted", Toast.LENGTH_SHORT).show();
+                       loadData();
+                   });
+                    return listItem;
+                }
+            };
+
+            listView.setAdapter(adapter);
+
         }
     }
 
